@@ -1,0 +1,8 @@
+#!/bin/bash
+
+name=${PWD##*/}
+echo "Building $name"
+docker build . -t musl-builder
+docker run --rm -v $PWD/..:/home/rust/rs -ti \
+       -w /home/rust/rs/"$name" musl-builder \
+       cargo build --release --target=x86_64-unknown-linux-musl --target-dir target/alpine-musl/
